@@ -26,3 +26,16 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+/**
+ * Adds content from the server to the page
+ */
+async function addData() {
+  //fetch('/data').then(response => response.text()).then((quote) => {
+  //  document.getElementById('fetch-container').innerText = quote;
+ // });
+
+  const response = await fetch('/data');
+  const quote = await response.text();
+  document.getElementById('fetch-container').innerText = quote;
+}
