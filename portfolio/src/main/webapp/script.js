@@ -35,3 +35,29 @@ async function addData() {
     const quote = await response.text();
     document.getElementById('fetch-container').innerText = quote;
 }
+
+/**
+ * Fetches stats from the servers and adds them to the DOM.
+ */
+function getServerData() {
+  fetch('/data').then(response => response.json()).then((stats) => {
+    // stats is an object, not a string, so we have to
+    // reference its fields to create HTML content
+
+    const statsListElement = document.getElementById('server-data-container');
+    statsListElement.innerHTML = '';
+    statsListElement.appendChild(
+        createListElement('First Message: ' + stats.firstMessage));
+    statsListElement.appendChild(
+        createListElement('Second Message: ' + stats.secondMessage));
+    statsListElement.appendChild(
+        createListElement('Third Message: ' + stats.thirdMessage));
+  });
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}
