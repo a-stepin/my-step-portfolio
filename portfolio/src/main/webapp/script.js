@@ -39,6 +39,8 @@ async function addData() {
 /**
  * Fetches stats from the servers and adds them to the DOM.
  */
+
+ /*
 function getServerData() {
   fetch('/data').then(response => response.json()).then((stats) => {
     // stats is an object, not a string, so we have to
@@ -52,6 +54,31 @@ function getServerData() {
         createListElement('Second Message: ' + stats.secondMessage));
     statsListElement.appendChild(
         createListElement('Third Message: ' + stats.thirdMessage));
+  });
+}
+*/
+
+/**
+ * Fetches the current state of the page and builds the UI.
+ */
+function getComment() {
+  fetch('/data').then(response => response.json()).then((comments) => {
+    //const totalEl = document.getElementById('total');
+    /*
+    if (game.gameOver) {
+      // The current game is over, show the total for the next game.
+      totalEl.innerText = 'Total: 21';
+    } else {
+      totalEl.innerText = 'Total: ' + game.currentTotal;
+    }
+    */
+
+    // Build the list of history entries.
+    const historyEl = document.getElementById('past-comments');
+    if (comments.history === undefined)
+    comments.history.forEach((line) => {
+      historyEl.appendChild(createListElement(line));
+    });
   });
 }
 
