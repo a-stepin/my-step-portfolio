@@ -75,10 +75,18 @@ function getComment() {
 
     // Build the list of history entries.
     const historyEl = document.getElementById('past-comments');
-    if (comments.history === undefined)
-    comments.history.forEach((line) => {
-      historyEl.appendChild(createListElement(line));
-    });
+    if(comments === undefined){
+        console.log("Comments are undefined")
+    } else {
+        console.log(comments)
+    }
+    if (comments !== undefined){
+        comments.forEach((line) => {
+        historyEl.appendChild(createListElement(line));
+        });
+    } else {
+        console.log("Still undefined")
+    }
   });
 }
 

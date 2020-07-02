@@ -31,13 +31,13 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
-    ArrayList<String> messages = new ArrayList<>();
+    //ArrayList<String> messages = new ArrayList<>();
     //messages.add("Jeff Dean writes directly in binary. He then writes the source code as documentation for other developers.");
     //messages.add("Unsatisfied with constant time, Jeff Dean created the world's first O(1/N) algorithm.");
     //messages.add("Jeff Dean's keyboard has two keys: 1 and 0.");
 
     // Convert the ArrayList to JSON
-    String json = convertToJson(messages);
+    String json = convertToJson(comments.getHistory());
 
     // Send the JSON as the response
     response.setContentType("application/json;");
@@ -81,7 +81,7 @@ public class DataServlet extends HttpServlet {
    * Converts a List of Strings into a JSON string using the Gson library. Note: We first added
    * the Gson library dependency to pom.xml.
    */
-  private String convertToJson(ArrayList<String> messages) {
+  private String convertToJson(List<String> messages) {
     Gson gson = new Gson();
     String json = gson.toJson(messages);
     return json;

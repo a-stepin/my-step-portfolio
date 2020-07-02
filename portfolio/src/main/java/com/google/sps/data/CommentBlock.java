@@ -25,7 +25,9 @@ import java.util.List;
 public class CommentBlock {
 
   /** List of descriptions of turns, e.g. "Player 1 took 3. New total: 18" */
-  public final List<String> history = new ArrayList<>();
+  private final List<String> history = new ArrayList<>();
+
+  public List<String> getHistory(){ return history; }
 
   public void logComment(String name, String comment) {
     history.add(name + " said: " + comment);
