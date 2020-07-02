@@ -17,6 +17,12 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,6 +42,30 @@ public class DataServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        
+        Query query = new Query("Task").addSort("timestamp", SortDirection.DESCENDING);
+
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        PreparedQuery results = datastore.prepare(query);
+
+        //List<Task> tasks = new ArrayList<>();
+        for (Entity entity : results.asIterable()) {
+            //long id = entity.getKey().getId();
+            String comment = (String) entity.getProperty("comment");
+            String name = (String) entity.getProperty("name");
+
+            comments.logComment(name, comment);
+            //Task task = new Task(id, title, timestamp);
+            //tasks.add(task);
+        }
+
+/*
+        Gson gson = new Gson();
+
+        response.setContentType("application/json;");
+        response.getWriter().println(gson.toJson(tasks));
+  */
+        
         response.setContentType("text/html;");
 
         // Convert the ArrayList to JSON
@@ -44,6 +74,7 @@ public class DataServlet extends HttpServlet {
         // Send the JSON as the response
         response.setContentType("application/json;");
         response.getWriter().println(json);
+        
     }
 
   @Override
@@ -51,6 +82,7 @@ public class DataServlet extends HttpServlet {
 
         String comment = request.getParameter("comment");
         String name = request.getParameter("name");
+        long timestamp = System.currentTimeMillis();
 
         // Treat empty name as default name
         if (name.equals("")) {
@@ -60,6 +92,7 @@ public class DataServlet extends HttpServlet {
         Entity taskEntity = new Entity("Task");
         taskEntity.setProperty("name", name);
         taskEntity.setProperty("comment", comment);
+        taskEntity.setProperty("timestamp", timestamp);
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(taskEntity);
