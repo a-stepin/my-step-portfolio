@@ -23,12 +23,12 @@ import java.util.List;
  */
 public class CommentBlock {
 
-  /** List of descriptions of comments, e.g. "Anonymous said: %n 'Hello World' " */
+  /** List of descriptions of comments, e.g. "Anonymous said: [new line] 'Hello World' " */
   private final List<String> history = new ArrayList<>();
 
   public List<String> getHistory(){ return history; }
 
   public void logComment(String name, String comment) {
-    history.add(name + " said: %n" + "'" + comment + "'");
+    history.add(name + " said: \n" + "'" + comment + "'");
   }
 }
