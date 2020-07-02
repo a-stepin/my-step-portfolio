@@ -18,18 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class representing the subtraction game, where players take turns subtracting from 21 to reach 0.
+ * Class representing a block of comments, where players take turns subtracting from 21 to reach 0.
  *
- * <p>Note: The private variables in this class are converted into JSON.
  */
 public class CommentBlock {
 
-  /** List of descriptions of turns, e.g. "Player 1 took 3. New total: 18" */
+  /** List of descriptions of comments, e.g. "Anonymous said: %n 'Hello World' " */
   private final List<String> history = new ArrayList<>();
 
   public List<String> getHistory(){ return history; }
 
   public void logComment(String name, String comment) {
-    history.add(name + " said: " + comment);
+    history.add(name + " said: %n" + "'" + comment + "'");
   }
 }

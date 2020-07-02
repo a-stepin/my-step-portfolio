@@ -36,57 +36,20 @@ async function addData() {
     document.getElementById('fetch-container').innerText = quote;
 }
 
-/**
- * Fetches stats from the servers and adds them to the DOM.
- */
-
- /*
-function getServerData() {
-  fetch('/data').then(response => response.json()).then((stats) => {
-    // stats is an object, not a string, so we have to
-    // reference its fields to create HTML content
-
-    const statsListElement = document.getElementById('server-data-container');
-    statsListElement.innerHTML = '';
-    statsListElement.appendChild(
-        createListElement('First Message: ' + stats.firstMessage));
-    statsListElement.appendChild(
-        createListElement('Second Message: ' + stats.secondMessage));
-    statsListElement.appendChild(
-        createListElement('Third Message: ' + stats.thirdMessage));
-  });
-}
-*/
 
 /**
  * Fetches the current state of the page and builds the UI.
  */
 function getComment() {
   fetch('/data').then(response => response.json()).then((comments) => {
-    //const totalEl = document.getElementById('total');
-    /*
-    if (game.gameOver) {
-      // The current game is over, show the total for the next game.
-      totalEl.innerText = 'Total: 21';
-    } else {
-      totalEl.innerText = 'Total: ' + game.currentTotal;
-    }
-    */
-
+    
     // Build the list of history entries.
     const historyEl = document.getElementById('past-comments');
-    if(comments === undefined){
-        console.log("Comments are undefined")
-    } else {
-        console.log(comments)
-    }
     if (comments !== undefined){
         comments.forEach((line) => {
         historyEl.appendChild(createListElement(line));
         });
-    } else {
-        console.log("Still undefined")
-    }
+    } 
   });
 }
 
