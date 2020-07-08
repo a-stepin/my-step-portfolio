@@ -86,8 +86,9 @@ function setValComments(e){
     console.log(e.sender.value)
 }
 
-function clearNumChoice(value) {
+function clearNumChoice() {
     document.getElementById('past-comments').innerHTML = "";
+    let value = document.getElementById('numComments').value;
 
     fetch('/data?numComments=' + value).then(response => response.json()).then((comments) => {
             // Build the list of history entries.

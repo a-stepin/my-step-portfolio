@@ -8,41 +8,35 @@
   </head>
   <body onload = "getComment()">
     <div id="content">
-      <h1 style="text-align:center;">Alicia's Portfolio</h1>
-      <p>I am currently a computer science student at the University of Washington, heading into my second year of studies </p>
-      <p>A collection of <mark>projects</mark> that I worked on while doing a remote internship as a <em>Google Step</em> intern</p>
-      <p>This is my portfolio.</p>
-      <p>These are my cats.</p>
-      <img src="images/cats.jpg"/ alt="Two cats" width="700" height="600">
-      <p>Click here to get a random message:</p>
-      <body onload="addData()">
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="server-data-container"></div>
-      <div id="greeting-container"></div>
-      <div id="fetch-container"></div>
-    <ul id="past-comments"></ul>
+        <h1 style="text-align:center;">Alicia's Portfolio</h1>
+        <p>I am currently a computer science student at the University of Washington, heading into my second year of studies </p>
+        <p>A collection of <mark>projects</mark> that I worked on while doing a remote internship as a <em>Google Step</em> intern</p>
+        <p>This is my portfolio.</p>
+        <p>These are my cats.</p>
+        <img src="images/cats.jpg" alt="Two cats" width="700" height="600">
+        <p>Click here to get a random message:</p>
 
+        <button onclick="addRandomGreeting()">Hello</button>
+        <div id="server-data-container"></div>
+        <div id="greeting-container"></div>
+        <div id="fetch-container"></div>
+        <ul id="past-comments"></ul>
 
+        <form action="/data" method="POST">
 
-    <form action="/data" method="POST">
+        <p>Add Comment:</p>
+        <textarea rows="2" cols="25" name="comment"></textarea>
+        <label for="name">(OPTIONAL) Name:</label>
+        <input type="text" name="name">
+        
+        <input type="submit">
+        </form>
 
-      <p>Add Comment:</p>
-      <textarea rows="2" cols="25" name="comment"></textarea>
-      <label for="name"><br>(OPTIONAL) Name:</label><br>
-      <input type="text" name="name">
-      <br/><br/>
-      <input type="submit"/>
-    </form>
-
-    <label for="numComments">Choose how many comments to display:</label> 
-        <input type="number" name="numComments" id="numComments" min="1" max="10" value="1">
-        <input type="button"  id="updateButton" value="Update Number of Comments Shown" onClick="clearNumChoice(this.value)">
-
-
-    <button type="button" onclick="deleteComments()">Delete all comments</button>
-    <br><br>
-
+        <input type="number" id="numComments" min="1" max="10" value="1">
+        <button onclick="clearNumChoice()">Update Number of Comments</button>
+        <button onclick="deleteComments()">Delete all comments</button>
     
+    </div>
 
     <footer>
         <div class="row">
@@ -61,9 +55,9 @@
                     <img src="images/linkedin.png" alt="Linkedin" style="width:100px" href="https://www.linkedin.com/in/aliciastepin/">
                 </a>
             </div>
-    </div>
-</footer>
-  </body>
+        </div>
+    </footer>
+</body>
 </html>
 
 

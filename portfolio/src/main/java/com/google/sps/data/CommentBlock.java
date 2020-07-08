@@ -31,4 +31,11 @@ public class CommentBlock {
   public void logComment(String name, String comment) {
     history.add(name + " said: \n" + "'" + comment + "'");
   }
+
+  private class Comment{
+      private String name;
+      private String comment;
+
+    
+  }
 }
