@@ -42,7 +42,7 @@ async function addData() {
  */
 function getComment() {
     
-    /*let numCom = () => {
+    let numCom = () => {
         let value = document.getElementById('numComments').value;
         if(value == undefined || value == ""){
             value = 1;
@@ -71,7 +71,9 @@ function getComment() {
         });
     };
     document.getElementById('numComments').onchange = numCom;
-    numCom(); */
+    numCom(); 
+
+    /*
     let comVal = document.getElementById('numComments').value;
     console.log(comVal)
     fetch(`/data?numComments=${comVal}`).then(response => response.json()).then((comments) => {
@@ -79,7 +81,8 @@ function getComment() {
         comments.forEach((line) => {
             historyEl.appendChild(createListElement(line));
         });
-    });
+    }); 
+    */addData
 }
 
 function setValComments(e){
@@ -95,19 +98,19 @@ function clearNumChoice() {
     fetch('/data?numComments=' + value).then(response => response.json()).then((comments) => {
             // Build the list of history entries.
             let historyEl = document.getElementById('past-comments');
-            //while(historyEl.hasChildNodes()) {
-            //    try {
-             //       historyEl.removeChild('li');
-             //   } catch (e) { }
-            //}
-            //let valPosted = 0;
+            while(historyEl.hasChildNodes()) {
+                try {
+                    historyEl.removeChild('li');
+                } catch (e) { }
+            }
+            let valPosted = 0;
             if (comments !== undefined){
-                /* while(valPosted < value){
+                 while(valPosted < value){
                     comments.forEach((line) => {
                         historyEl.appendChild(createListElement(line));
                     });
                     valPosted++;
-                } */
+                } 
                 comments.forEach((line) => {
                     historyEl.appendChild(createListElement(line));
                 });
@@ -117,8 +120,6 @@ function clearNumChoice() {
 
 async function deleteComments() {
     console.log("Deleting comments");
-    //const request = new Request('/delete-data', {method: 'POST'});
-    //fetch(request).then(response => response.json()).then(clearNumChoice(0));
 
     const response = await fetch('/delete-data');
     const quote = await response.text();
