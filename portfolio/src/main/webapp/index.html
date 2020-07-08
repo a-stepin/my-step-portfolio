@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <title>My Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAClGBTeuDeQKrC6zOLvr5cK6K8Q9pwKM"></script>
     <script src="script.js"></script>
   </head>
-  <body onload = "getComment()">
+  <body onload = "getComment();" >
     <div id="content">
         <h1 style="text-align:center;">Alicia's Portfolio</h1>
         <p>I am currently a computer science student at the University of Washington, heading into my second year of studies </p>
@@ -32,6 +33,8 @@
         <input type="submit">
         </form>
 
+        <div id="map"></div>
+        <p>This page shows a Google Map!</p>
         <input type="number" id="numComments" min="1" max="10" value="1">
         <button onclick="clearNumChoice()">Update Number of Comments</button>
         <button onclick="deleteComments()">Delete all comments</button>
