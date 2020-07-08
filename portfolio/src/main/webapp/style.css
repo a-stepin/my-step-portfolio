@@ -39,3 +39,9 @@ footer {
   flex: 33.33%;
   padding: 5px;
 }
+
+#map {
+  border: thin solid black;
+  height: 500px;
+  width: 500px;
+}

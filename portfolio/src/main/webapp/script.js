@@ -41,7 +41,7 @@ async function addData() {
  * Fetches the current state of the page and builds the UI.
  */
 function getComment() {
-    
+    /*
     let numCom = () => {
         let value = document.getElementById('numComments').value;
         if(value == undefined || value == ""){
@@ -71,9 +71,10 @@ function getComment() {
         });
     };
     document.getElementById('numComments').onchange = numCom;
-    numCom(); 
+    numCom();
+    */ 
 
-    /*
+    
     let comVal = document.getElementById('numComments').value;
     console.log(comVal)
     fetch(`/data?numComments=${comVal}`).then(response => response.json()).then((comments) => {
@@ -82,7 +83,7 @@ function getComment() {
             historyEl.appendChild(createListElement(line));
         });
     }); 
-    */addData
+    //addData
 }
 
 function setValComments(e){
@@ -134,3 +135,9 @@ function createListElement(text) {
   return liElement;
 }
 
+/** Creates a map and adds it to the page. */
+function createMap() {
+  const map = new google.maps.Map(
+      document.getElementById('map'),
+      {center: {lat: 37.422, lng: -122.084}, zoom: 16});
+}
