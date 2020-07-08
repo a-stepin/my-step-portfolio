@@ -31,7 +31,7 @@ function addRandomGreeting() {
  * Adds content from the server to the page
  */
 async function addData() {
-    const response = await fetch('/data');
+    const response = await fetch("data");
     const quote = await response.text();
     document.getElementById('fetch-container').innerText = quote;
 }
@@ -41,21 +41,92 @@ async function addData() {
  * Fetches the current state of the page and builds the UI.
  */
 function getComment() {
-  fetch('/data').then(response => response.json()).then((comments) => {
     
-    // Build the list of history entries.
-    const historyEl = document.getElementById('past-comments');
-    if (comments !== undefined){
-        comments.forEach((line) => {
-        historyEl.appendChild(createListElement(line));
+    /*let numCom = () => {
+        let value = document.getElementById('numComments').value;
+        if(value == undefined || value == ""){
+            value = 1;
+        }
+
+        console.log(value);
+        fetch(`/data?numComments=${value}`).then(response => response.json()).then((comments) => {
+            // Build the list of history entries.
+            let historyEl = document.getElementById('past-comments');
+            while(historyEl.hasChildNodes()) {
+                try {
+                    historyEl.removeChild('li');
+                } catch (e) { }
+            }
+            let valPosted = 0;
+            if (comments !== undefined){
+                while(valPosted < value){
+                    comments.forEach((line) => {
+                        historyEl.appendChild(createListElement(line));
+                    });
+                    valPosted++;
+                }
+            } 
+        }).catch((e) => {
+            console.log(e);
         });
-    } 
-  });
+    };
+    document.getElementById('numComments').onchange = numCom;
+    numCom(); */
+    let comVal = document.getElementById('numComments').value;
+    console.log(comVal)
+    fetch(`/data?numComments=${comVal}`).then(response => response.json()).then((comments) => {
+        const historyEl = document.getElementById('past-comments');
+        comments.forEach((line) => {
+            historyEl.appendChild(createListElement(line));
+        });
+    });
+}
+
+function setValComments(e){
+    console.log(e.sender.value)
+}
+
+function clearNumChoice(value) {
+    document.getElementById('past-comments').innerHTML = "";
+
+    fetch('/data?numComments=' + value).then(response => response.json()).then((comments) => {
+            // Build the list of history entries.
+            let historyEl = document.getElementById('past-comments');
+            //while(historyEl.hasChildNodes()) {
+            //    try {
+             //       historyEl.removeChild('li');
+             //   } catch (e) { }
+            //}
+            //let valPosted = 0;
+            if (comments !== undefined){
+                /* while(valPosted < value){
+                    comments.forEach((line) => {
+                        historyEl.appendChild(createListElement(line));
+                    });
+                    valPosted++;
+                } */
+                comments.forEach((line) => {
+                    historyEl.appendChild(createListElement(line));
+                });
+            } 
+    });
+}
+
+async function deleteComments() {
+    console.log("Deleting comments");
+    //const request = new Request('/delete-data', {method: 'POST'});
+    //fetch(request).then(response => response.json()).then(clearNumChoice(0));
+
+    const response = await fetch('/delete-data');
+    const quote = await response.text();
+    document.getElementById('past-comments').innerText = quote;
+    console.log("Deleted comments");
 }
 
 /** Creates an <li> element containing text. */
 function createListElement(text) {
-  const liElement = document.createElement('li');
+  const liElement = document.createElement('p');
   liElement.innerText = text;
   return liElement;
 }
+

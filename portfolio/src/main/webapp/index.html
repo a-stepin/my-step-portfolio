@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="getComment()">
+  <body onload = "getComment()">
     <div id="content">
       <h1 style="text-align:center;">Alicia's Portfolio</h1>
       <p>I am currently a computer science student at the University of Washington, heading into my second year of studies </p>
@@ -19,8 +19,10 @@
       <button onclick="addRandomGreeting()">Hello</button>
       <div id="server-data-container"></div>
       <div id="greeting-container"></div>
-  
+      <div id="fetch-container"></div>
     <ul id="past-comments"></ul>
+
+
 
     <form action="/data" method="POST">
 
@@ -29,11 +31,18 @@
       <label for="name"><br>(OPTIONAL) Name:</label><br>
       <input type="text" name="name">
       <br/><br/>
-
-      <input type="submit" />
+      <input type="submit"/>
     </form>
 
+    <label for="numComments">Choose how many comments to display:</label> 
+        <input type="number" name="numComments" id="numComments" min="1" max="10" value="1">
+        <input type="button"  id="updateButton" value="Update Number of Comments Shown" onClick="clearNumChoice(this.value)">
 
+
+    <button type="button" onclick="deleteComments()">Delete all comments</button>
+    <br><br>
+
+    
 
     <footer>
         <div class="row">
