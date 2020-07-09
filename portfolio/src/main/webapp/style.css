@@ -44,4 +44,5 @@ footer {
   border: thin solid black;
   height: 500px;
   width: 500px;
+  align-content: center;
 }

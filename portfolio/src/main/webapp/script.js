@@ -92,9 +92,15 @@ function createListElement(text) {
   return liElement;
 }
 
-/** Creates a map and adds it to the page. */
 function createMap() {
   const map = new google.maps.Map(
       document.getElementById('map'),
-      {center: {lat: 37.422, lng: -122.084}, zoom: 16});
+      {center: {lat: 47.649081, lng: -122.350417 }, zoom: 7});
+     
+
+  const trexMarker = new google.maps.Marker({
+    position: {lat: 47.651357, lng: -122.347480 },
+    map: map,
+    title: 'Fremont Troll Under the Bridge'
+  });
 }
