@@ -40,41 +40,8 @@ async function addData() {
 /**
  * Fetches the current state of the page and builds the UI.
  */
-function getComment() {
-    /*
-    let numCom = () => {
-        let value = document.getElementById('numComments').value;
-        if(value == undefined || value == ""){
-            value = 1;
-        }
+function getComments() {
 
-        console.log(value);
-        fetch(`/data?numComments=${value}`).then(response => response.json()).then((comments) => {
-            // Build the list of history entries.
-            let historyEl = document.getElementById('past-comments');
-            while(historyEl.hasChildNodes()) {
-                try {
-                    historyEl.removeChild('li');
-                } catch (e) { }
-            }
-            let valPosted = 0;
-            if (comments !== undefined){
-                while(valPosted < value){
-                    comments.forEach((line) => {
-                        historyEl.appendChild(createListElement(line));
-                    });
-                    valPosted++;
-                }
-            } 
-        }).catch((e) => {
-            console.log(e);
-        });
-    };
-    document.getElementById('numComments').onchange = numCom;
-    numCom();
-    */ 
-
-    
     let comVal = document.getElementById('numComments').value;
     console.log(comVal)
     fetch(`/data?numComments=${comVal}`).then(response => response.json()).then((comments) => {
@@ -83,13 +50,11 @@ function getComment() {
             historyEl.appendChild(createListElement(line));
         });
     }); 
-    //addData
 }
 
 function setValComments(e){
     console.log(e.sender.value)
 }
-
 
 
 function clearNumChoice() {
@@ -99,11 +64,6 @@ function clearNumChoice() {
     fetch('/data?numComments=' + value).then(response => response.json()).then((comments) => {
             // Build the list of history entries.
             let historyEl = document.getElementById('past-comments');
-            while(historyEl.hasChildNodes()) {
-                try {
-                    historyEl.removeChild('li');
-                } catch (e) { }
-            }
             let valPosted = 0;
             if (comments !== undefined){
                  while(valPosted < value){
@@ -120,12 +80,9 @@ function clearNumChoice() {
 }
 
 async function deleteComments() {
-    console.log("Deleting comments");
-
     const response = await fetch('/delete-data');
     const quote = await response.text();
     document.getElementById('past-comments').innerText = quote;
-    console.log("Deleted comments");
 }
 
 /** Creates an <li> element containing text. */

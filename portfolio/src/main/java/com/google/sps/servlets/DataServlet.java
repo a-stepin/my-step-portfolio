@@ -53,28 +53,20 @@ public class DataServlet extends HttpServlet {
         int numComments;
         try {
             numComments = Integer.parseInt(numComString);
-            System.out.println("Could conver to int: " + numComString);
+
         } catch (NumberFormatException e) {
-            System.err.println("Could not convert to int: " + numComString);
             numComments = -1;
         }
-        //int numComments = Integer.parseInt(numComString); // Why is this always 1?; How do you clear out old comments?
         int numComLogged = 0;
 
         for (Entity entity : results.asIterable()) {
             if(numComments == 0 || numComments > numComLogged){
                 String comment = (String) entity.getProperty("comment");
                 String name = (String) entity.getProperty("name");
-                System.out.println("numComments" + numComments + " numComLogged " + numComLogged);
                 comments.logComment(name, comment);
             }
             numComLogged++;
         }
-  
-        //response.setContentType("text/html;");
-
-        // Convert the ArrayList to JSON
-        //String json = convertToJson(comments.getHistory());
 
         // Send the JSON as the response
         response.setContentType("application/json;");
@@ -88,7 +80,6 @@ public class DataServlet extends HttpServlet {
         String comment = request.getParameter("comment");
         String name = request.getParameter("name");
         System.out.println("Trying to int parse " + request.getParameter("numComments"));
-        //int numComments = Integer.parseInt(request.getParameter("numComments"));
 
         // Convert the input to an int.
         int numComments;
@@ -96,14 +87,13 @@ public class DataServlet extends HttpServlet {
             numComments = Integer.parseInt(request.getParameter("numComments"));
         } catch (NumberFormatException e) {
             System.err.println("Could not convert to int: " + request.getParameter("numComments"));
-            //return -1;
         }
 
         long timestamp = System.currentTimeMillis();
 
         // Treat empty name as default name
         if (name.equals("")) {
-        name = defaultName;
+            name = defaultName;
         }
 
         Entity taskEntity = new Entity("Task");
@@ -115,7 +105,6 @@ public class DataServlet extends HttpServlet {
         datastore.put(taskEntity);
 
         // Log the comment and redirect back to the HTML page.
-        //comments.logComment(name, comment);
         response.sendRedirect("/index.html");
     }
 
