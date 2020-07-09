@@ -95,7 +95,7 @@ function createListElement(text) {
 function createMap() {
   const map = new google.maps.Map(
       document.getElementById('map'),
-      {center: {lat: 47.649081, lng: -122.350417 }, zoom: 7});
+      {center: {lat: 47.649081, lng: -122.350417 }, zoom: 13});
      
 
   const trexMarker = new google.maps.Marker({
@@ -104,3 +104,18 @@ function createMap() {
     title: 'Fremont Troll Under the Bridge'
   });
 }
+
+/** Fetches Big Foot sightings data from the server and displays it in a map. */
+function createBFSightingsMap() {
+  fetch('/bf-data').then(response => response.json()).then((bfSightings) => {
+    const map = new google.maps.Map(
+        document.getElementById('map'),
+        {center: {lat: 35.78613674, lng: -119.4491591}, zoom: 7});
+
+    bfSightings.forEach((bfSighting) => {
+      new google.maps.Marker(
+          {position: {lat: bfSighting.lat, lng: bfSighting.lng}, map: map});
+    });
+  });
+}
+
