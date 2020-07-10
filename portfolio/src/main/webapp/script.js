@@ -43,17 +43,12 @@ async function addData() {
 function getComments() {
 
     let comVal = document.getElementById('numComments').value;
-    console.log(comVal)
     fetch(`/data?numComments=${comVal}`).then(response => response.json()).then((comments) => {
         const historyEl = document.getElementById('past-comments');
         comments.forEach((line) => {
             historyEl.appendChild(createListElement(line));
         });
     }); 
-}
-
-function setValComments(e){
-    console.log(e.sender.value)
 }
 
 

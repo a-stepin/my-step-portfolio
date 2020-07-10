@@ -9,6 +9,7 @@ import java.util.Scanner;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /** Returns UFO data as a JSON array, e.g. [{"lat": 38.4404675, "lng": -122.7144313}] */
 @WebServlet("/bf-data")

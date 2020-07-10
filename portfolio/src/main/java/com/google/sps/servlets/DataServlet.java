@@ -24,6 +24,7 @@ import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import com.google.sps.data.CommentBlock;
 import com.google.gson.Gson;
@@ -56,7 +57,7 @@ public class DataServlet extends HttpServlet {
         int numComLogged = 0;
 
         for (Entity entity : results.asIterable()) {
-            if(numComments == 0 || numComments > numComLogged){
+            if(numComments != 1 && numComments < numComLogged){
                 Object rawComment = entity.getProperty("comment");
                 Object rawName = entity.getProperty("name");
                 if(rawComment != null && rawName != null){
