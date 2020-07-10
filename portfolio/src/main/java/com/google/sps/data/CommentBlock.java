@@ -29,13 +29,7 @@ public class CommentBlock {
   public List<String> getHistory(){ return history; }
 
   public void logComment(String name, String comment) {
-    history.add(name + " said: \n" + "'" + comment + "'");
-  }
-
-  private class Comment{
-      private String name;
-      private String comment;
-
-    
+    String newComent = String.format("%1$s said: \n '%2$s'", name, comment);
+    history.add(newComent);
   }
 }

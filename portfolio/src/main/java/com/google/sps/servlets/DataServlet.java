@@ -20,14 +20,10 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import com.google.sps.data.CommentBlock;
 import com.google.gson.Gson;
@@ -61,9 +57,13 @@ public class DataServlet extends HttpServlet {
 
         for (Entity entity : results.asIterable()) {
             if(numComments == 0 || numComments > numComLogged){
-                String comment = (String) entity.getProperty("comment");
-                String name = (String) entity.getProperty("name");
-                comments.logComment(name, comment);
+                Object rawComment = entity.getProperty("comment");
+                Object rawName = entity.getProperty("name");
+                if(rawComment != null && rawName != null){
+                    String comment = String.valueOf(rawComment);
+                    String name = String.valueOf(rawName);
+                    comments.logComment(name, comment);
+                }
             }
             numComLogged++;
         }
