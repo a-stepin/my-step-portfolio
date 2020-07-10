@@ -31,33 +31,86 @@ function addRandomGreeting() {
  * Adds content from the server to the page
  */
 async function addData() {
-    const response = await fetch('/data');
+    const response = await fetch("data");
     const quote = await response.text();
     document.getElementById('fetch-container').innerText = quote;
 }
 
-/**
- * Fetches stats from the servers and adds them to the DOM.
- */
-function getServerData() {
-  fetch('/data').then(response => response.json()).then((stats) => {
-    // stats is an object, not a string, so we have to
-    // reference its fields to create HTML content
 
-    const statsListElement = document.getElementById('server-data-container');
-    statsListElement.innerHTML = '';
-    statsListElement.appendChild(
-        createListElement('First Message: ' + stats.firstMessage));
-    statsListElement.appendChild(
-        createListElement('Second Message: ' + stats.secondMessage));
-    statsListElement.appendChild(
-        createListElement('Third Message: ' + stats.thirdMessage));
-  });
+/**
+ * Fetches the current state of the page and builds the UI.
+ */
+function getComments() {
+
+    let comVal = document.getElementById('numComments').value;
+    fetch(`/data?numComments=${comVal}`).then(response => response.json()).then((comments) => {
+        const historyEl = document.getElementById('past-comments');
+        comments.forEach((line) => {
+            historyEl.appendChild(createListElement(line));
+        });
+    }); 
+}
+
+
+function clearNumChoice() {
+    document.getElementById('past-comments').innerHTML = "";
+    let value = document.getElementById('numComments').value;
+
+    fetch('/data?numComments=' + value).then(response => response.json()).then((comments) => {
+            // Build the list of history entries.
+            let historyEl = document.getElementById('past-comments');
+            let valPosted = 0;
+            if (comments !== undefined){
+                 while(valPosted < value){
+                    comments.forEach((line) => {
+                        historyEl.appendChild(createListElement(line));
+                    });
+                    valPosted++;
+                } 
+                comments.forEach((line) => {
+                    historyEl.appendChild(createListElement(line));
+                });
+            } 
+    });
+}
+
+async function deleteComments() {
+    const response = await fetch('/delete-data');
+    const quote = await response.text();
+    document.getElementById('past-comments').innerText = quote;
 }
 
 /** Creates an <li> element containing text. */
 function createListElement(text) {
-  const liElement = document.createElement('li');
+  const liElement = document.createElement('p');
   liElement.innerText = text;
   return liElement;
 }
+
+function createMap() {
+  const map = new google.maps.Map(
+      document.getElementById('map'),
+      {center: {lat: 47.649081, lng: -122.350417 }, zoom: 13});
+     
+
+  const trexMarker = new google.maps.Marker({
+    position: {lat: 47.651357, lng: -122.347480 },
+    map: map,
+    title: 'Fremont Troll Under the Bridge'
+  });
+}
+
+/** Fetches Big Foot sightings data from the server and displays it in a map. */
+function createBFSightingsMap() {
+  fetch('/bf-data').then(response => response.json()).then((bfSightings) => {
+    const map = new google.maps.Map(
+        document.getElementById('map'),
+        {center: {lat: 35.78613674, lng: -119.4491591}, zoom: 7});
+
+    bfSightings.forEach((bfSighting) => {
+      new google.maps.Marker(
+          {position: {lat: bfSighting.lat, lng: bfSighting.lng}, map: map});
+    });
+  });
+}
+

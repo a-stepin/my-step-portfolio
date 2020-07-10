@@ -14,48 +14,113 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+import com.google.sps.data.CommentBlock;
+import com.google.gson.Gson;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** Servlet that returns comment data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+    private CommentBlock comments = new CommentBlock();
+
+    // If no name is provided, name is set to default
+    private final String defaultName = "Anonymous";
+
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        
+        Query query = new Query("Task").addSort("timestamp", SortDirection.DESCENDING);
+
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        PreparedQuery results = datastore.prepare(query);
+
+        String numComString = request.getParameter("numComments");
+
+        int numComments;
+        try {
+            numComments = Integer.parseInt(numComString);
+
+        } catch (NumberFormatException e) {
+            numComments = -1;
+        }
+        int numComLogged = 0;
+
+        for (Entity entity : results.asIterable()) {
+            if(numComments != 1 && numComments < numComLogged){
+                Object rawComment = entity.getProperty("comment");
+                Object rawName = entity.getProperty("name");
+                if(rawComment != null && rawName != null){
+                    String comment = String.valueOf(rawComment);
+                    String name = String.valueOf(rawName);
+                    comments.logComment(name, comment);
+                }
+            }
+            numComLogged++;
+        }
+
+        // Send the JSON as the response
+        response.setContentType("application/json;");
+        response.getWriter().println(convertToJson(comments.getHistory()));
+        
+    }
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    ArrayList<String> messages = new ArrayList<>();
-    messages.add("Jeff Dean writes directly in binary. He then writes the source code as documentation for other developers.");
-    messages.add("Unsatisfied with constant time, Jeff Dean created the world's first O(1/N) algorithm.");
-    messages.add("Jeff Dean's keyboard has two keys: 1 and 0.");
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    // Convert the ArrayList to JSON
-    String json = convertToJson(messages);
+        String comment = request.getParameter("comment");
+        String name = request.getParameter("name");
+        System.out.println("Trying to int parse " + request.getParameter("numComments"));
 
-    // Send the JSON as the response
-    response.setContentType("application/json;");
-    response.getWriter().println(json);
-  }
+        // Convert the input to an int.
+        int numComments;
+        try {
+            numComments = Integer.parseInt(request.getParameter("numComments"));
+        } catch (NumberFormatException e) {
+            System.err.println("Could not convert to int: " + request.getParameter("numComments"));
+        }
+
+        long timestamp = System.currentTimeMillis();
+
+        // Treat empty name as default name
+        if (name.equals("")) {
+            name = defaultName;
+        }
+
+        Entity taskEntity = new Entity("Task");
+        taskEntity.setProperty("name", name);
+        taskEntity.setProperty("comment", comment);
+        taskEntity.setProperty("timestamp", timestamp);
+
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        datastore.put(taskEntity);
+
+        // Log the comment and redirect back to the HTML page.
+        response.sendRedirect("/index.html");
+    }
 
 
-  /**
-   * Converts a List of Strings into a JSON string using manual String concatentation.
-   */
-  private String convertToJson(ArrayList<String> messages) {
-    String json = "{";
-    json += "\"firstMessage\": ";
-    json += "\"" + messages.get(0) + "\"";
-    json += ", ";
-    json += "\"secondMessage\": ";
-    json += "\"" + messages.get(1) + "\"";
-    json += ", ";
-    json += "\"thirdMessage\": ";
-    json += "\"" + messages.get(2) + "\"";
-    json += "}";
-    return json;
-  }
+    /**
+    * Converts a List of Strings into a JSON string using the Gson library. Note: We first added
+    * the Gson library dependency to pom.xml.
+    */
+    private String convertToJson(List<String> messages) {
+        Gson gson = new Gson();
+        String json = gson.toJson(messages);
+        return json;
+    }
 }
+
+
+
+
