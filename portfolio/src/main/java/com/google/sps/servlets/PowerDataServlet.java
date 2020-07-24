@@ -36,19 +36,17 @@ public class PowerDataServlet extends HttpServlet {
   public void init() {
     powerData = new ArrayList<>();
     Scanner scanner = new Scanner(getServletContext().getResourceAsStream("/WEB-INF/indian-power-generation.csv"));
-
+    scanner.nextLine(); // Skip CSV header
     while (scanner.hasNextLine()) {
-      String line = scanner.nextLine();
-      String[] cells = line.split(",");
-
-      if(!cells[0].equals("State / Union territory (UT)")){
+        String line = scanner.nextLine();
+        String[] cells = line.split(",");
         String name = String.valueOf(cells[0]);
         Integer area = Integer.valueOf(cells[1]);
         String region = String.valueOf(cells[2]);
         Double percent = Double.valueOf(cells[3]);
 
         powerData.add(new IndianPowerData(name, area, percent, region));
-      }
+      
     }
     scanner.close();
   }
